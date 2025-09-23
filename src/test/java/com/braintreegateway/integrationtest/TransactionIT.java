@@ -5362,11 +5362,32 @@ public class TransactionIT extends IntegrationTest implements MerchantAccountTes
             assertEquals("R01", first.getAchReturnResponses().get(0).getReasonCode());
     }
 
+    @Test
+    public void searchOnReasonRejectedReasonCodes() {
+            TransactionSearchRequest searchRequest = new TransactionSearchRequest().
+                reasonCodes().in("RJCT");
+
+            ResourceCollection<Transaction> collection = gateway.transaction().search(searchRequest);
+
+            Transaction first = null;
+            for (Transaction txn : collection) {
+                if ("ach_txn_ret3".equals(txn.getId())) {
+                    first = txn;
+                    break;
+                }
+            }
+            assertNotNull(first);
+            assertEquals("RJCT", first.getAchReturnCode());
+            assertEquals("Bank accounts located outside of the U.S. are not supported.", first.getAchRejectReason());
+            assertEquals("RJCT", first.getAchReturnResponses().get(0).getReasonCode());
+            assertEquals("Bank accounts located outside of the U.S. are not supported.", first.getAchReturnResponses().get(0).getRejectReason());
+    }
+
     public void searchOnReasonAllReasonCodes() {
             TransactionSearchRequest searchRequestAny = new TransactionSearchRequest().
                 reasonCodes().in("any_reason_code");
 
-            assertEquals(2, gateway.transaction().search(searchRequestAny).getMaximumSize());
+            assertEquals(4, gateway.transaction().search(searchRequestAny).getMaximumSize());
 
             TransactionSearchRequest searchRequest = new TransactionSearchRequest().
                 reasonCodes().in("ABC");

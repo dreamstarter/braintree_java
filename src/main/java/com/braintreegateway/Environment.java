@@ -8,13 +8,13 @@ import java.util.Arrays;
 public class Environment {
     /** For Braintree internal development. */
     public static final Environment DEVELOPMENT = new Environment(developmentBaseURL() + ":" + developmentPort(), "http://auth.venmo.dev:9292", new String[]{}, "development", developmentGraphQLURL());
-    public static final Environment QA = new Environment("https://gateway.qa.braintreepayments.com:443", "https://auth.qa.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt", "ssl/payments_braintreeapi_com.ca.crt"}, "qa", "https://payments-qa.dev.braintree-api.com/graphql");
+    public static final Environment QA = new Environment("https://gateway.qa.braintreepayments.com:443", "https://auth.qa.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt"}, "qa", "https://payments-qa.dev.braintree-api.com/graphql");
 
     /** For production. */
-    public static final Environment PRODUCTION = new Environment("https://api.braintreegateway.com:443", "https://auth.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt", "ssl/payments_braintreeapi_com.ca.crt"}, "production", "https://payments.braintree-api.com/graphql");
+    public static final Environment PRODUCTION = new Environment("https://api.braintreegateway.com:443", "https://auth.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt"}, "production", "https://payments.braintree-api.com/graphql");
 
     /** For merchants to use during their development and testing. */
-    public static final Environment SANDBOX = new Environment("https://api.sandbox.braintreegateway.com:443", "https://auth.sandbox.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt", "ssl/payments_braintreeapi_com.ca.crt"}, "sandbox", "https://payments.sandbox.braintree-api.com/graphql");
+    public static final Environment SANDBOX = new Environment("https://api.sandbox.braintreegateway.com:443", "https://auth.sandbox.venmo.com", new String[]{"ssl/api_braintreegateway_com.ca.crt"}, "sandbox", "https://payments.sandbox.braintree-api.com/graphql");
 
     private String environmentName;
 

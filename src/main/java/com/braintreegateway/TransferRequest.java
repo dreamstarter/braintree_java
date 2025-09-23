@@ -3,6 +3,8 @@ package com.braintreegateway;
 public class TransferRequest extends Request {
 
     private TransactionRequest parent;
+    private PartyRequest receiver;
+    private PartyRequest sender;
     private String type;
 
     public TransferRequest() {
@@ -12,7 +14,17 @@ public class TransferRequest extends Request {
         this.parent = parent;
     }
 
-    public TransferRequest type(String type ) {
+    public PartyRequest receiver() {
+        receiver = new PartyRequest(this, "receiver");
+        return receiver;
+    }
+
+    public PartyRequest sender() {
+        sender = new PartyRequest(this, "sender");
+        return sender;
+    }
+
+    public TransferRequest type(String type) {
         this.type = type;
         return this;
     }
@@ -37,7 +49,13 @@ public class TransferRequest extends Request {
     }
 
     protected RequestBuilder buildRequest(String root) {
-        RequestBuilder builder = new RequestBuilder(root);
+        RequestBuilder builder = new RequestBuilder(root); 
+        if (receiver != null) {
+            builder.addElement("receiver", receiver);
+        }
+        if (sender != null) {
+            builder.addElement("sender", sender);
+        }
         if (type != null) {
             builder.addElement("type", type);
         }

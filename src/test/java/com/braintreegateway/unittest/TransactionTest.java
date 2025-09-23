@@ -251,13 +251,59 @@ public class TransactionTest {
 				"  <disbursement-details></disbursement-details>\n" +
 				"  <payment-instrument-type>credit_card</payment-instrument-type>\n" +
 				"  <ach-return-code>R01</ach-return-code>\n" +
+				"  <ach-return-responses type=\"array\">\n" +
+				"    <ach-return-response>\n" +
+				"      <reason-code>R01</reason-code>\n" +
+				"    </ach-return-response>\n" +
+				"  </ach-return-responses>\n" +
 				"</transaction>\n";
 
 		SimpleNodeWrapper transactionNode = SimpleNodeWrapper.parse(xml);
 		Transaction transaction = new Transaction(transactionNode);
 
 		assertEquals("R01", transaction.getAchReturnCode());
+		assertEquals(1, transaction.getAchReturnResponses().size());
+		assertEquals("R01", transaction.getAchReturnResponses().get(0).getReasonCode());
 	}
+	
+	@Test
+	public void parseAchRejectReason() {
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<transaction>\n" +
+				"  <id>recognized_transaction_id</id>\n" +
+				"  <status></status>\n" +
+				"  <type>sale</type>\n" +
+				"  <customer></customer>\n" +
+				"  <billing></billing>\n" +
+				"  <shipping></shipping>\n" +
+				"  <custom-fields/>\n" +
+				"  <credit-card></credit-card>\n" +
+				"  <status-history type=\"array\"></status-history>\n" +
+				"  <subscription></subscription>\n" +
+				"  <descriptor></descriptor>\n" +
+				"  <escrow-status></escrow-status>\n" +
+				"  <disbursement-details></disbursement-details>\n" +
+				"  <payment-instrument-type>credit_card</payment-instrument-type>\n" +
+				"  <ach-return-code>RJCT</ach-return-code>\n" +
+				"  <ach-reject-reason>Reject Reason</ach-reject-reason>\n" +
+				"  <ach-return-responses type=\"array\">\n" +
+				"    <ach-return-response>\n" +
+				"      <reason-code>RJCT</reason-code>\n" +
+				"      <reject-reason>Reject Reason</reject-reason>\n" +
+				"    </ach-return-response>\n" +
+				"  </ach-return-responses>\n" +
+				"</transaction>\n";
+
+		SimpleNodeWrapper transactionNode = SimpleNodeWrapper.parse(xml);
+		Transaction transaction = new Transaction(transactionNode);
+
+		assertEquals("RJCT", transaction.getAchReturnCode());
+		assertEquals("Reject Reason", transaction.getAchRejectReason());
+		assertEquals(1, transaction.getAchReturnResponses().size());
+		assertEquals("RJCT", transaction.getAchReturnResponses().get(0).getReasonCode());
+		assertEquals("Reject Reason", transaction.getAchReturnResponses().get(0).getRejectReason());
+	}
+
 
 	@Test
 	public void parseSepaDirectDebitReturnCode() {

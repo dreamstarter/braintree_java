@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.45.0
+
+* Add `achRejectReason` to `Transaction`
+* Add `rejectReason` to `AchReturnResponse`
+* Add `sender` and `receiver` to `transfer` in `Transaction`
+
 ## 3.44.0
 * Add `upcomingRetryDate` to `Transaction`
 * Add `remainingFileEvidenceStorage` to Dispute

@@ -6,10 +6,12 @@ public class AchReturnResponse {
 
     private String createdAt;
     private String reasonCode;
+    private String rejectReason;
 
     public AchReturnResponse(NodeWrapper node) {
         createdAt = node.findString("created-at");
         reasonCode = node.findString("reason-code");
+        rejectReason = node.findString("reject-reason");
     }
 
     public String getCreatedAt() {
@@ -18,5 +20,9 @@ public class AchReturnResponse {
 
     public String getReasonCode() {
         return reasonCode;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
     }
 }

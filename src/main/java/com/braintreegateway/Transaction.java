@@ -139,6 +139,7 @@ public class Transaction {
     }
 
     private boolean accountFundingTransaction;
+    private String achRejectReason;
     private String achReturnCode;
     private List<AchReturnResponse> achReturnResponses;
     private String acquirerReferenceNumber;
@@ -351,6 +352,7 @@ public class Transaction {
             packages.add(new PackageDetails(packageNode));
         }
 
+        achRejectReason = node.findString("ach-reject-reason");
         achReturnCode = node.findString("ach-return-code");
         sepaDirectDebitReturnCode = node.findString("sepa-direct-debit-return-code");
         planId = node.findString("plan-id");
@@ -707,6 +709,10 @@ public class Transaction {
 
     public String getNetworkResponseCode() {
         return networkResponseCode;
+    }
+
+    public String getAchRejectReason() {
+        return achRejectReason;
     }
 
     public String getAchReturnCode() {

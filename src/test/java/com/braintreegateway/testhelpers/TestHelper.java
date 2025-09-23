@@ -1,6 +1,7 @@
 package com.braintreegateway.testhelpers;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -603,4 +604,72 @@ public abstract class TestHelper {
         String rawResponse = StringUtils.inputStreamToString(stream);
         return JSON.std.mapFrom(rawResponse);
     }
+
+    public static TransactionRequest sdwoTransactionWithTransferRequest(String transferType, String merchantAccountId) {
+      return new TransactionRequest().
+                amount(new BigDecimal("100.00")).
+                merchantAccountId(merchantAccountId).
+                creditCard().
+                    number("4111111111111111").
+                    expirationDate("06/2026").
+                    cvv("123").
+                    done().
+                descriptor().
+                    name("companynme12*product1").
+                    phone("1232344444").
+                    url("example.com").
+                    done().
+                billingAddress(). 
+                    firstName("Bob James").
+                    countryCodeAlpha2("CA").
+                    extendedAddress("").
+                    locality("Trois-Rivires").
+                    region("QC").
+                    postalCode("G8Y 156").
+                    streetAddress("2346 Boul Lane").
+                    done().    
+                options().
+                    storeInVaultOnSuccess(true).
+                    done().
+                transfer()
+                    .type(transferType)
+                    .sender()
+                        .firstName("Alice")
+                        .lastName("Silva")
+                        .accountReferenceNumber("1000012345")
+                        .taxId("12345678900")
+                        .address()
+                            .streetAddress("Rua das Flores, 100")
+                            .extendedAddress("2B")
+                            .locality("São Paulo")
+                            .region("SP")
+                            .postalCode("01001-000")
+                            .countryCodeAlpha2("BR")
+                            .internationalPhone()
+                                .countryCode("55")
+                                .nationalNumber("1234567890")
+                                .done()
+                            .done()
+                        .done()
+                    .receiver()
+                        .firstName("Bob")
+                        .lastName("Souza")
+                        .accountReferenceNumber("2000012345")
+                        .taxId("98765432100")
+                        .address()
+                            .streetAddress("Avenida Brasil, 200")
+                            .extendedAddress("2B")
+                            .locality("Rio de Janeiro")
+                            .region("RJ")
+                            .postalCode("20040-002")
+                            .countryCodeAlpha2("BR")
+                            .internationalPhone()
+                                .countryCode("55")
+                                .nationalNumber("9876543210")
+                                .done()
+                            .done()
+                        .done()
+                    .done();
+    }
+    
 }
