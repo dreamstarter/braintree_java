@@ -29,6 +29,7 @@ public class UsBankAccountVerification {
 
     public enum VerificationMethod {
         INDEPENDENT_CHECK("independent_check"),
+        INSTANT_VERIFICATION_ACCOUNT_VALIDATION("instant_verification_account_validation"),
         MICRO_TRANSFERS("micro_transfers"),
         NETWORK_CHECK("network_check"),
         TOKENIZED_CHECK("tokenized_check"),
@@ -43,6 +44,18 @@ public class UsBankAccountVerification {
         @Override
         public String toString() {
             return name;
+        }
+
+        public static VerificationMethod fromString(String value) {
+            if (value == null) {
+                return UNRECOGNIZED;
+            }
+            for (VerificationMethod method : values()) {
+                if (method.name.equals(value)) {
+                    return method;
+                }
+            }
+            return UNRECOGNIZED;
         }
     }
 
@@ -78,11 +91,7 @@ public class UsBankAccountVerification {
     public UsBankAccountVerification(NodeWrapper node) {
         this.id = node.findString("id");
         this.status = EnumUtils.findByName(Status.class, node.findString("status"), Status.UNRECOGNIZED);
-        this.verificationMethod = EnumUtils.findByName(
-            VerificationMethod.class,
-            node.findString("verification-method"),
-            VerificationMethod.UNRECOGNIZED
-            );
+        this.verificationMethod = VerificationMethod.fromString(node.findString("verification-method"));
         this.verificationAddOns = EnumUtils.findByName(
             VerificationAddOns.class,
             node.findString("verification-add-ons"),

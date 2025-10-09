@@ -486,7 +486,7 @@ public class ThreeDSecureIT extends IntegrationTest implements MerchantAccountTe
     public String getClientDataString(String nonce, String authorizationFingerprint) {
         return "{\n" +
                 "\"authorizationFingerprint\": \"" + authorizationFingerprint + "\",\n" +
-                "\"braintreeLibraryVersion\": \"braintree/web/3.44.0\",\n" +
+                "\"braintreeLibraryVersion\": \"braintree/web/3.45.0\",\n" +
                 "\"dfReferenceId\": \"ABC-123\",\n" +
                 "\"nonce\": \"" + nonce + "\",\n" +
                 "\"clientMetadata\": {\n" +
@@ -494,7 +494,7 @@ public class ThreeDSecureIT extends IntegrationTest implements MerchantAccountTe
                 "\"issuerDeviceDataCollectionResult\": true,\n" +
                 "\"issuerDeviceDataCollectionTimeElapsed\": 413,\n" +
                 "\"requestedThreeDSecureVersion\": \"2\",\n" +
-                "\"sdkVersion\": \"web/3.44.0\"\n" +
+                "\"sdkVersion\": \"web/3.45.0\"\n" +
                 "}\n" +
                 "}";
     }

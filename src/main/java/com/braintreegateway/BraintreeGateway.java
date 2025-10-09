@@ -303,4 +303,14 @@ public class BraintreeGateway {
     public ExchangeRateQuoteGateway exchangeRateQuote() {
         return new ExchangeRateQuoteGateway(http, graphQLClient, configuration);
     }
+
+    /**
+     * Returns a {@link BankAccountInstantVerificationGateway} for interacting with
+     * Bank Account Instant Verification functionality.
+     *
+     * @return a {@link BankAccountInstantVerificationGateway}.
+     */
+    public BankAccountInstantVerificationGateway bankAccountInstantVerification() {
+        return new BankAccountInstantVerificationGateway(this, http, configuration, graphQLClient);
+    }
 }

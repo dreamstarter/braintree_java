@@ -1,27 +1,28 @@
 package com.braintreegateway.testhelpers;
 
-import java.io.*;
-import java.math.BigDecimal;
-import java.net.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.braintreegateway.*;
 import com.braintreegateway.Transaction.Status;
 import com.braintreegateway.org.apache.commons.codec.binary.Base64;
 import com.braintreegateway.util.*;
 import com.fasterxml.jackson.jr.ob.JSON;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TestHelper {
 
@@ -552,6 +553,97 @@ public abstract class TestHelper {
         return paymentMethod.get("id");
     }
 
+    public static String generatesBankAccountInstantVerificationNonce(BraintreeGateway gateway) {
+        try {
+            String requestBody = "{"
+                + "\"account_details\": {"
+                + "\"account_number\": \"567891234\","
+                + "\"account_type\": \"CHECKING\","
+                + "\"classification\": \"PERSONAL\","
+                + "\"tokenized_account\": true,"
+                + "\"last_4\": \"1234\""
+                + "},"
+                + "\"institution_details\": {"
+                + "\"bank_id\": {"
+                + "\"bank_code\": \"021000021\","
+                + "\"country_code\": \"US\""
+                + "}"
+                + "},"
+                + "\"account_holders\": ["
+                + "{"
+                + "\"ownership\": \"PRIMARY\","
+                + "\"full_name\": {"
+                + "\"name\": \"Dan Schulman\""
+                + "},"
+                + "\"name\": {"
+                + "\"given_name\": \"Dan\","
+                + "\"surname\": \"Schulman\","
+                + "\"full_name\": \"Dan Schulman\""
+                + "}"
+                + "}"
+                + "]"
+                + "}";
+
+            String encodedClientToken = gateway.clientToken().generate();
+            String clientToken = TestHelper.decodeClientToken(encodedClientToken);
+            Map<String, Object> clientTokenJson = JSON.std.mapFrom(clientToken);
+            
+            String apiUrl = null;
+            Map<String, Object> braintreeApi = (Map<String, Object>) clientTokenJson.get("braintree_api");
+            if (braintreeApi != null) {
+                apiUrl = (String) braintreeApi.get("url");
+            } else {
+                Map<String, Object> graphQLConfig = (Map<String, Object>) clientTokenJson.get("graphQL");
+                if (graphQLConfig != null) {
+                    apiUrl = (String) graphQLConfig.get("url");
+                }
+            }
+            
+            if (apiUrl == null) {
+                throw new RuntimeException("Unable to determine API URL from client token");
+            }
+            
+            String atmosphereBaseUrl = apiUrl.replace("/graphql", "");
+            String url = atmosphereBaseUrl + "/v1/open-finance/tokenize-bank-account-details";
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Braintree-Version", "2019-01-01");
+            connection.setRequestProperty("User-Agent", "Braintree Java Library");
+            connection.setRequestProperty("X-ApiVersion", "1");
+            
+            String auth = gateway.getConfiguration().getPublicKey() + ":" + gateway.getConfiguration().getPrivateKey();
+            String encodedAuth = Base64.encodeBase64String(auth.getBytes(StandardCharsets.UTF_8));
+            connection.setRequestProperty("Authorization", "Basic " + encodedAuth);
+            
+            connection.setDoOutput(true);
+            connection.getOutputStream().write(requestBody.getBytes(StandardCharsets.UTF_8));
+
+            int responseCode = connection.getResponseCode();
+            InputStream inputStream = responseCode >= 200 && responseCode < 300 
+                ? connection.getInputStream() 
+                : connection.getErrorStream();
+                
+            String response = new Scanner(inputStream, StandardCharsets.UTF_8.name())
+                .useDelimiter("\\A").next();
+                
+            if (responseCode != 200) {
+                throw new RuntimeException("HTTP error " + responseCode + ": " + response);
+            }
+
+            Map<String, Object> responseData = JSON.std.mapFrom(response);
+            if (!responseData.containsKey("tenant_token")) {
+                throw new RuntimeException("Open Banking tokenization failed: " + response);
+            }
+
+            return (String) responseData.get("tenant_token");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate US bank account nonce without ACH mandate", e);
+        }
+    }
+
     public static String generateInvalidUsBankAccountNonce() {
         String valid_characters = "bcdfghjkmnpqrstvwxyz23456789";
         String token = "tokenusbankacct";
@@ -564,7 +656,7 @@ public abstract class TestHelper {
         }
         return token + "_xxx";
     }
-    
+
     private static Map<String, Object> sendGraphQLRequest(BraintreeGateway gateway, String graphQLRequest) {
         String encodedClientToken = gateway.clientToken().generate();
         String clientToken = TestHelper.decodeClientToken(encodedClientToken);
@@ -671,5 +763,4 @@ public abstract class TestHelper {
                         .done()
                     .done();
     }
-    
 }

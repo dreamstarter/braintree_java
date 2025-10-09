@@ -412,6 +412,7 @@ public class PaymentMethodIT extends IntegrationTest {
         assertNotNull(applePayCard.getExpirationYear());
         assertNotNull(applePayCard.getExpired());
         assertNotNull(applePayCard.getHealthcare());
+        assertTrue(applePayCard.getIsDeviceToken());
         assertNotNull(applePayCard.getIssuingBank());
         assertNotNull(applePayCard.getLast4());
         assertNotNull(applePayCard.getPaymentInstrumentName());
@@ -462,6 +463,7 @@ public class PaymentMethodIT extends IntegrationTest {
         assertNotNull(applePayCard.getHealthcare());
         assertNotNull(applePayCard.getIssuingBank());
         assertNotNull(applePayCard.getLast4());
+        assertFalse(applePayCard.getIsDeviceToken());
         assertNotNull(applePayCard.getMerchantTokenIdentifier());
         assertNotNull(applePayCard.getPaymentInstrumentName());
         assertNotNull(applePayCard.getPayroll());

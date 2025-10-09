@@ -69,6 +69,7 @@ public class TransactionRequest extends Request {
     private TransactionOptionsRequest transactionOptionsRequest;
     private TransferRequest transferRequest;
     private Type type;
+    private TransactionUsBankAccountRequest usBankAccountRequest;
     private String venmoSdkPaymentMethodCode;
 
     public TransactionRequest() {
@@ -376,6 +377,16 @@ public class TransactionRequest extends Request {
       return this;
     }
 
+    /**
+     * Creates a new TransactionUsBankAccountRequest for configuring US bank account details.
+     *
+     * @return a TransactionUsBankAccountRequest
+     */
+    public TransactionUsBankAccountRequest usBankAccount() {
+        usBankAccountRequest = new TransactionUsBankAccountRequest(this);
+        return usBankAccountRequest;
+    }
+
     @Override
     public String toQueryString() {
         return toQueryString("transaction");
@@ -443,6 +454,7 @@ public class TransactionRequest extends Request {
             .addElement("taxExempt", taxExempt)
             .addElement("threeDSecurePassThru", threeDSecurePassThruRequest)
             .addElement("transfer", transferRequest)
+            .addElement("usBankAccount", usBankAccountRequest)
             .addElement("venmoSdkPaymentMethodCode", venmoSdkPaymentMethodCode);
 
         if (!customFields.isEmpty()) {

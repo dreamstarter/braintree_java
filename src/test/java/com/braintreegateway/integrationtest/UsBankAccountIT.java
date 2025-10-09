@@ -163,4 +163,82 @@ public class UsBankAccountIT extends IntegrationTest {
         assertNotNull(usBankAccountDetails.getToken());
         assertNotNull(usBankAccountDetails.isVerified());
     }
+
+    @Test
+    public void createTransactionWithAchMandate() {
+        Result<Customer> customerResult = gateway.customer().create(new CustomerRequest());
+        assertTrue(customerResult.isSuccess());
+        Customer customer = customerResult.getTarget();
+
+        String nonce = TestHelper.generateValidUsBankAccountNonce(gateway);
+        PaymentMethodRequest paymentMethodRequest = new PaymentMethodRequest()
+            .customerId(customer.getId())
+            .paymentMethodNonce(nonce)
+            .options()
+                .verificationMerchantAccountId(MerchantAccountTestConstants.US_BANK_MERCHANT_ACCOUNT)
+            .done();
+
+        Result<? extends PaymentMethod> paymentMethodResult = gateway.paymentMethod().create(paymentMethodRequest);
+        assertTrue(paymentMethodResult.isSuccess());
+
+        UsBankAccount usBankAccount = (UsBankAccount) paymentMethodResult.getTarget();
+
+        java.util.Calendar mandateAcceptedAt = java.util.Calendar.getInstance();
+        mandateAcceptedAt.add(java.util.Calendar.MINUTE, -10);
+
+        TransactionRequest transactionRequest = new TransactionRequest()
+            .amount(new BigDecimal("100.00"))
+            .paymentMethodToken(usBankAccount.getToken())
+            .merchantAccountId(MerchantAccountTestConstants.US_BANK_MERCHANT_ACCOUNT)
+            .usBankAccount()
+                .achMandateText("I authorize this ACH debit transaction for the amount shown above")
+                .achMandateAcceptedAt(mandateAcceptedAt)
+                .done()
+            .options()
+                .submitForSettlement(true)
+            .done();
+
+        Result<Transaction> result = gateway.transaction().sale(transactionRequest);
+
+        assertTrue(result.isSuccess());
+        Transaction transaction = result.getTarget();
+        
+        assertNotNull(transaction.getId());
+        assertEquals(new BigDecimal("100.00"), transaction.getAmount());
+        assertNotNull(transaction.getUsBankAccountDetails());
+        assertEquals(usBankAccount.getToken(), transaction.getUsBankAccountDetails().getToken());
+    }
+
+    @Test
+    public void usBankAccountVerificationWithInstantVerificationMethod() {
+        Result<Customer> customerResult = gateway.customer().create(new CustomerRequest());
+        assertTrue(customerResult.isSuccess());
+        Customer customer = customerResult.getTarget();
+
+        String nonce = TestHelper.generateValidUsBankAccountNonce(gateway);
+        PaymentMethodRequest request = new PaymentMethodRequest()
+                .customerId(customer.getId())
+                .paymentMethodNonce(nonce)
+                .options()
+                .verificationMerchantAccountId(MerchantAccountTestConstants.US_BANK_MERCHANT_ACCOUNT)
+                .done();
+
+        Result<? extends PaymentMethod> result = gateway.paymentMethod().create(request);
+        assertTrue(result.isSuccess());
+
+        UsBankAccount usBankAccount = (UsBankAccount) result.getTarget();
+        assertNotNull(usBankAccount.getVerifications());
+        assertFalse(usBankAccount.getVerifications().isEmpty());
+
+        UsBankAccountVerification verification = usBankAccount.getVerifications().get(0);
+        assertNotNull(verification.getVerificationMethod());
+        assertEquals(
+                UsBankAccountVerification.VerificationMethod.INDEPENDENT_CHECK,
+                verification.getVerificationMethod()
+        );
+        assertEquals(
+                UsBankAccountVerification.Status.VERIFIED,
+                verification.getStatus()
+        );
+    }
 }

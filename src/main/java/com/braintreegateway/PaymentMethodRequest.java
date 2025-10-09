@@ -23,6 +23,7 @@ public class PaymentMethodRequest extends Request {
     private String threeDSecureAuthenticationId;
     private String venmoSdkPaymentMethodCode;
     private PaymentMethodThreeDSecurePassThruRequest threeDSecurePassThruRequest;
+    private PaymentMethodUsBankAccountRequest usBankAccountRequest;
 
     public PaymentMethodRequest() {
     }
@@ -144,6 +145,11 @@ public class PaymentMethodRequest extends Request {
         return threeDSecurePassThruRequest;
     }
 
+    public PaymentMethodUsBankAccountRequest usBankAccount() {
+        this.usBankAccountRequest = new PaymentMethodUsBankAccountRequest(this);
+        return usBankAccountRequest;
+    }
+
     @Override
     public String toXML() {
         return buildRequest("payment-method").toXML();
@@ -171,7 +177,8 @@ public class PaymentMethodRequest extends Request {
             .addElement("paymentMethodNonce", paymentMethodNonce)
             .addElement("paypalRefreshToken", paypalRefreshToken)
             .addElement("threeDSecureAuthenticationId", threeDSecureAuthenticationId)
-            .addElement("venmoSdkPaymentMethodCode", venmoSdkPaymentMethodCode);
+            .addElement("venmoSdkPaymentMethodCode", venmoSdkPaymentMethodCode)
+            .addElement("usBankAccount", usBankAccountRequest);
 
         return builder;
     }

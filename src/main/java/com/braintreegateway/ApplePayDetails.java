@@ -24,6 +24,7 @@ public class ApplePayDetails {
     private String globalId;
     private String healthcare;
     private String imageUrl;
+    private boolean isDeviceToken;
     private String issuingBank;
     private String last4;
     private String merchantTokenIdentifier;
@@ -53,6 +54,7 @@ public class ApplePayDetails {
         globalId = node.findString("global-id");
         healthcare = node.findString("healthcare");
         imageUrl = node.findString("image-url");
+        isDeviceToken = node.findBoolean("is-device-token");
         issuingBank = node.findString("issuing-bank");
         last4 = node.findString("last-4");
         merchantTokenIdentifier = node.findString("merchant-token-identifier");
@@ -129,6 +131,10 @@ public class ApplePayDetails {
 
     public String getPayroll() {
         return payroll;
+    }
+
+    public boolean getIsDeviceToken(){
+        return isDeviceToken;
     }
 
     public String getIssuingBank() {

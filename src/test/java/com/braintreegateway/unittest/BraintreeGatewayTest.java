@@ -1,5 +1,6 @@
 package com.braintreegateway.unittest;
 
+import com.braintreegateway.BankAccountInstantVerificationGateway;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
 
@@ -19,5 +20,14 @@ public class BraintreeGatewayTest {
         BraintreeGateway gateway = BraintreeGateway.forPartner(Environment.DEVELOPMENT, "partner_id", "publicKey", "privateKey");
         assertEquals(gateway.getConfiguration().getPublicKey(), "publicKey");
         assertEquals(gateway.getConfiguration().getPrivateKey(), "privateKey");
+    }
+
+    @Test
+    public void bankAccountInstantVerificationReturnsGatewayInstance() {
+        BraintreeGateway gateway = new BraintreeGateway(Environment.DEVELOPMENT, "merchant_id", "public_key", "private_key");
+        BankAccountInstantVerificationGateway bankAccountInstantVerificationGateway = gateway.bankAccountInstantVerification();
+        
+        assertNotNull(bankAccountInstantVerificationGateway);
+        assertSame(BankAccountInstantVerificationGateway.class, bankAccountInstantVerificationGateway.getClass());
     }
 }

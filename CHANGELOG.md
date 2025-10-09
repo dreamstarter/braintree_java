@@ -1,7 +1,14 @@
 # Changelog
 
-## 3.45.0
+## Unreleased
 
+* Add Bank Account Instant Verification functionality
+* Add `BankAccountInstantVerificationGateway` for creating JWT tokens
+* Add `BankAccountInstantVerificationJwt` response object
+* Add `BankAccountInstantVerificationJwtRequest` for JWT creation
+* Add `achMandate` and `achMandateAcceptedAt` fields to `TransactionRequest`
+* Add `INSTANT_VERIFICATION` method to `UsBankAccountVerification.VerificationMethod`
+* Add `isDeviceToken` to `ApplePayCard` and `ApplePayDetails`
 * Add `achRejectReason` to `Transaction`
 * Add `rejectReason` to `AchReturnResponse`
 * Add `sender` and `receiver` to `transfer` in `Transaction`

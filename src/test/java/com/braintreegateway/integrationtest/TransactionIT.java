@@ -985,6 +985,46 @@ public class TransactionIT extends IntegrationTest implements MerchantAccountTes
         assertNotNull(transaction.getApplePayDetails().getExpirationYear());
         assertNotNull(transaction.getApplePayDetails().getHealthcare());
         assertNotNull(transaction.getApplePayDetails().getImageUrl());
+        assertTrue(transaction.getApplePayDetails().getIsDeviceToken());
+        assertNotNull(transaction.getApplePayDetails().getLast4());
+        assertNotNull(transaction.getApplePayDetails().getPaymentInstrumentName());
+        assertNotNull(transaction.getApplePayDetails().getPayroll());
+        assertNotNull(transaction.getApplePayDetails().getPrepaid());
+        assertNotNull(transaction.getApplePayDetails().getPrepaidReloadable());
+        assertNotNull(transaction.getApplePayDetails().getProductId());
+        assertNotNull(transaction.getApplePayDetails().getPurchase());
+        assertNotNull(transaction.getApplePayDetails().getSourceDescription());
+    }
+
+    @Test
+    public void saleWithApplePayMpanNonce() {
+        String applePayNonce = Nonce.ApplePayMpan;
+
+        TransactionRequest request = new TransactionRequest().
+            amount(SandboxValues.TransactionAmount.AUTHORIZE.amount).
+            paymentMethodNonce(applePayNonce);
+
+        Result<Transaction> result = gateway.transaction().sale(request);
+        assertTrue(result.isSuccess());
+        Transaction transaction = result.getTarget();
+
+        assertEquals(PaymentInstrumentType.APPLE_PAY_CARD, transaction.getPaymentInstrumentType());
+        assertNotNull(transaction.getApplePayDetails());
+        assertNotNull(transaction.getApplePayDetails().getBin());
+        assertNotNull(transaction.getApplePayDetails().getBusiness());
+        assertNotNull(transaction.getApplePayDetails().getCardType());
+        assertNotNull(transaction.getApplePayDetails().getCardholderName());
+        assertNotNull(transaction.getApplePayDetails().getCommercial());
+        assertNotNull(transaction.getApplePayDetails().getConsumer());
+        assertNotNull(transaction.getApplePayDetails().getCorporate());
+        assertNotNull(transaction.getApplePayDetails().getDebit());
+        assertNotNull(transaction.getApplePayDetails().getDurbinRegulated());
+        assertNotNull(transaction.getApplePayDetails().getExpirationMonth());
+        assertNotNull(transaction.getApplePayDetails().getExpirationYear());
+        assertNotNull(transaction.getApplePayDetails().getHealthcare());
+        assertNotNull(transaction.getApplePayDetails().getImageUrl());
+        assertFalse(transaction.getApplePayDetails().getIsDeviceToken());
+        assertNotNull(transaction.getApplePayDetails().getMerchantTokenIdentifier());
         assertNotNull(transaction.getApplePayDetails().getLast4());
         assertNotNull(transaction.getApplePayDetails().getPaymentInstrumentName());
         assertNotNull(transaction.getApplePayDetails().getPayroll());

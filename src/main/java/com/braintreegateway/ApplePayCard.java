@@ -32,6 +32,7 @@ public class ApplePayCard implements PaymentMethod {
     private String healthcare;
     private String imageUrl;
     private boolean isDefault;
+    private boolean isDeviceToken;
     private String issuingBank;
     private String last4;
     private String merchantTokenIdentifier;
@@ -66,6 +67,7 @@ public class ApplePayCard implements PaymentMethod {
         this.healthcare = node.findString("healthcare");
         this.imageUrl = node.findString("image-url");
         this.isDefault = node.findBoolean("default");
+        this.isDeviceToken = node.findBoolean("is-device-token");
         this.issuingBank = node.findString("issuing-bank");
         this.last4 = node.findString("last-4");
         this.merchantTokenIdentifier = node.findString("merchant-token-identifier");
@@ -161,6 +163,10 @@ public class ApplePayCard implements PaymentMethod {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public boolean getIsDeviceToken(){
+        return isDeviceToken;
     }
 
     public String getIssuingBank() {
