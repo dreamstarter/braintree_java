@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test;
 
 import com.braintreegateway.graphql.inputs.CustomerRecommendationsInput;
 import com.braintreegateway.graphql.inputs.CustomerSessionInput;
-import com.braintreegateway.graphql.inputs.PayPalPayeeInput; 
-import com.braintreegateway.graphql.inputs.PayPalPurchaseUnitInput; 
-import com.braintreegateway.MonetaryAmountInput;
+import com.braintreegateway.graphql.inputs.PayPalPayeeInput;
+import com.braintreegateway.graphql.inputs.PayPalPurchaseUnitInput;
+import com.braintreegateway.graphql.inputs.MonetaryAmountInput;
 
 import com.braintreegateway.graphql.enums.Recommendations; 
 

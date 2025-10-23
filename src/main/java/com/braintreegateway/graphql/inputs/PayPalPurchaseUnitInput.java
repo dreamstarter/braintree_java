@@ -3,8 +3,8 @@ package com.braintreegateway.graphql.inputs;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.braintreegateway.MonetaryAmountInput; 
-import com.braintreegateway.graphql.inputs.PayPalPayeeInput; 
+import com.braintreegateway.graphql.inputs.MonetaryAmountInput;
+import com.braintreegateway.graphql.inputs.PayPalPayeeInput;
 import com.braintreegateway.Request;
 import com.braintreegateway.util.Experimental;
 

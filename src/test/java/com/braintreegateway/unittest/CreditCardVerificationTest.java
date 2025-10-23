@@ -67,4 +67,18 @@ public class CreditCardVerificationTest {
     assertEquals("M", verification.getAniFirstNameResponseCode());
     assertEquals("M", verification.getAniLastNameResponseCode());
   }
+
+  @Test
+  public void testVerificationPaymentAccountReferenceFromCreditCard() {
+    String xml = "<verification>"
+                 + "    <credit-card>"
+                 + "        <payment-account-reference>V0010013019339005665779448477</payment-account-reference>"
+                 + "    </credit-card>"
+                 + "</verification>";
+
+    SimpleNodeWrapper verificationNode = SimpleNodeWrapper.parse(xml);
+    CreditCardVerification verification = new CreditCardVerification(verificationNode);
+
+    assertEquals("V0010013019339005665779448477", verification.getCreditCard().getPaymentAccountReference());
+  }
 }

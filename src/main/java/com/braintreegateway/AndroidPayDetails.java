@@ -28,6 +28,7 @@ public class AndroidPayDetails {
     private Boolean isNetworkTokenized;
     private String issuingBank;
     private String last4;
+    private String paymentAccountReference;
     private String payroll;
     private String prepaid;
     private String prepaidReloadable;
@@ -55,13 +56,14 @@ public class AndroidPayDetails {
         this.bin = node.findString("bin");
         this.imageUrl = node.findString("image-url");
         this.isNetworkTokenized = node.findBoolean("is-network-tokenized");
+        this.paymentAccountReference = node.findString("payment-account-reference");
+        this.payroll = node.findString("payroll");
         this.prepaid = node.findString("prepaid");
         this.prepaidReloadable = node.findString("prepaid-reloadable");
         this.healthcare = node.findString("healthcare");
         this.debit = node.findString("debit");
         this.durbinRegulated = node.findString("durbin-regulated");
         this.commercial = node.findString("commercial");
-        this.payroll = node.findString("payroll");
         this.issuingBank = node.findString("issuing-bank");
         this.countryOfIssuance = node.findString("country-of-issuance");
         this.productId = node.findString("product-id");
@@ -126,6 +128,10 @@ public class AndroidPayDetails {
     
     public Boolean isNetworkTokenized() {
         return isNetworkTokenized;
+    }
+
+    public String getPaymentAccountReference() {
+        return paymentAccountReference;
     }
 
     public String getPrepaid() {

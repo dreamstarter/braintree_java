@@ -775,4 +775,12 @@ public class CreditCardVerificationIT extends IntegrationTest {
         CreditCardVerification verification = result.getTarget();
         assertNotNull(verification.getNetworkTransactionId());
     }
+
+    @Test
+    public void findVerificationWithPaymentAccountReference() {
+        CreditCardVerification verification = gateway.creditCardVerification().find("threedsecuredverification");
+
+        assertNotNull(verification.getCreditCard());
+        assertNull(verification.getCreditCard().getPaymentAccountReference());
+    }
 }

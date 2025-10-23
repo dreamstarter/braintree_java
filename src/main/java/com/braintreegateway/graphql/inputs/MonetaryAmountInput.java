@@ -1,4 +1,4 @@
-package com.braintreegateway;
+package com.braintreegateway.graphql.inputs;
 
 import java.math.BigDecimal;
 import java.util.Map;

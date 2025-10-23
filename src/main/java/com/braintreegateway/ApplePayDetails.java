@@ -28,6 +28,7 @@ public class ApplePayDetails {
     private String issuingBank;
     private String last4;
     private String merchantTokenIdentifier;
+    private String paymentAccountReference;
     private String paymentInstrumentName;
     private String payroll;
     private String prepaid;
@@ -58,6 +59,7 @@ public class ApplePayDetails {
         issuingBank = node.findString("issuing-bank");
         last4 = node.findString("last-4");
         merchantTokenIdentifier = node.findString("merchant-token-identifier");
+        paymentAccountReference = node.findString("payment-account-reference");
         paymentInstrumentName = node.findString("payment-instrument-name");
         payroll = node.findString("payroll");
         prepaid = node.findString("prepaid");
@@ -159,6 +161,10 @@ public class ApplePayDetails {
 
     public String getMerchantTokenIdentifier() {
         return merchantTokenIdentifier;
+    }
+
+    public String getPaymentAccountReference() {
+        return paymentAccountReference;
     }
 
     public String getSourceCardLast4() {

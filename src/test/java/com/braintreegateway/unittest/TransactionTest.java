@@ -452,4 +452,55 @@ public class TransactionTest {
 		assertEquals("2", transaction.getShippingAddress().getInternationalPhone().getCountryCode());
 		assertEquals("3121234568", transaction.getShippingAddress().getInternationalPhone().getNationalNumber());
 	}
+
+    @Test
+    public void testApplePayDetailsPaymentAccountReference() {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<transaction>\n" +
+                "  <id>transaction_id</id>\n" +
+                "  <type>sale</type>\n" +
+                "  <apple-pay>\n" +
+                "    <payment-account-reference>V0010013019339005665779448477</payment-account-reference>\n" +
+                "  </apple-pay>\n" +
+                "</transaction>\n";
+
+        SimpleNodeWrapper transactionNode = SimpleNodeWrapper.parse(xml);
+        Transaction transaction = new Transaction(transactionNode);
+
+        assertEquals("V0010013019339005665779448477", transaction.getApplePayDetails().getPaymentAccountReference());
+    }
+
+    @Test
+    public void testAndroidPayDetailsPaymentAccountReference() {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<transaction>\n" +
+                "  <id>transaction_id</id>\n" +
+                "  <type>sale</type>\n" +
+                "  <android-pay-card>\n" +
+                "    <payment-account-reference>V0010013019339005665779448477</payment-account-reference>\n" +
+                "  </android-pay-card>\n" +
+                "</transaction>\n";
+
+        SimpleNodeWrapper transactionNode = SimpleNodeWrapper.parse(xml);
+        Transaction transaction = new Transaction(transactionNode);
+
+        assertEquals("V0010013019339005665779448477", transaction.getAndroidPayDetails().getPaymentAccountReference());
+    }
+
+    @Test
+    public void testCreditCardPaymentAccountReference() {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<transaction>\n" +
+                "  <id>transaction_id</id>\n" +
+                "  <type>sale</type>\n" +
+                "  <credit-card>\n" +
+                "    <payment-account-reference>V0010013019339005665779448477</payment-account-reference>\n" +
+                "  </credit-card>\n" +
+                "</transaction>\n";
+
+        SimpleNodeWrapper transactionNode = SimpleNodeWrapper.parse(xml);
+        Transaction transaction = new Transaction(transactionNode);
+
+        assertEquals("V0010013019339005665779448477", transaction.getCreditCard().getPaymentAccountReference());
+    }
 }

@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import com.braintreegateway.graphql.inputs.CustomerSessionInput;
 import com.braintreegateway.graphql.inputs.UpdateCustomerSessionInput;
-import com.braintreegateway.graphql.inputs.PayPalPayeeInput; 
-import com.braintreegateway.graphql.inputs.PayPalPurchaseUnitInput; 
-import com.braintreegateway.MonetaryAmountInput;
+import com.braintreegateway.graphql.inputs.PayPalPayeeInput;
+import com.braintreegateway.graphql.inputs.PayPalPurchaseUnitInput;
+import com.braintreegateway.graphql.inputs.MonetaryAmountInput;
 
 class UpdateCustomerSessionInputTest {
   @Test

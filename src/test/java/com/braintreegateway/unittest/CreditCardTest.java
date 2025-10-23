@@ -75,4 +75,16 @@ public class CreditCardTest {
         assertEquals(Corporate.UNKNOWN, card.getCorporate());
         assertEquals(Purchase.UNKNOWN, card.getPurchase());
     }
+
+    @Test
+    public void testPaymentAccountReferencePopulatedWhenPresent() {
+        String xml = "<credit-card>"
+                     + "<payment-account-reference>V0010013019339005665779448477</payment-account-reference>"
+                   + "</credit-card>";
+
+        SimpleNodeWrapper creditCardNode = SimpleNodeWrapper.parse(xml);
+        CreditCard card = new CreditCard(creditCardNode);
+
+        assertEquals("V0010013019339005665779448477", card.getPaymentAccountReference());
+    }
 }

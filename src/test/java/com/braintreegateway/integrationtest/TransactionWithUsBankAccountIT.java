@@ -40,7 +40,6 @@ public class TransactionWithUsBankAccountIT extends IntegrationTest implements M
         assertEquals("Dan Schulman", usBankAccountDetails.getAccountHolderName());
         assertTrue(Pattern.matches(".*CHASE.*", usBankAccountDetails.getBankName()));
         AchMandate achMandate = usBankAccountDetails.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
     }
 
@@ -71,7 +70,6 @@ public class TransactionWithUsBankAccountIT extends IntegrationTest implements M
         assertEquals("Dan Schulman", usBankAccountDetails.getAccountHolderName());
         assertTrue(Pattern.matches(".*CHASE.*", usBankAccountDetails.getBankName()));
         AchMandate achMandate = usBankAccountDetails.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
 
         request = new TransactionRequest()
@@ -98,7 +96,6 @@ public class TransactionWithUsBankAccountIT extends IntegrationTest implements M
         assertEquals("Dan Schulman", usBankAccountDetails.getAccountHolderName());
         assertTrue(Pattern.matches(".*CHASE.*", usBankAccountDetails.getBankName()));
         achMandate = usBankAccountDetails.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
     }
 

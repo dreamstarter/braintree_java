@@ -42,6 +42,7 @@ public class TransactionRequest extends Request {
     private String paymentMethodNonce;
     private String paymentMethodToken;
     private TransactionPayPalRequest paypalRequest;
+    private String processingMerchantCategoryCode;
     private String productSku;
     private String purchaseOrderNumber;
     private Boolean recurring;
@@ -240,6 +241,11 @@ public class TransactionRequest extends Request {
         return paypalRequest;
     }
 
+    public TransactionRequest processingMerchantCategoryCode(String processingMerchantCategoryCode) {
+      this.processingMerchantCategoryCode = processingMerchantCategoryCode;
+      return this;
+    }
+
     public TransactionRequest productSku(String productSku) {
         this.productSku = productSku;
         return this;
@@ -434,6 +440,7 @@ public class TransactionRequest extends Request {
             .addElement("paymentMethodToken", paymentMethodToken)
             .addElement("paymentFacilitator", paymentFacilitatorRequest)
             .addElement("paypalAccount", paypalRequest)
+            .addElement("processingMerchantCategoryCode", processingMerchantCategoryCode)
             .addElement("productSku", productSku)
             .addElement("purchaseOrderNumber", purchaseOrderNumber)
             .addElement("recurring", recurring)

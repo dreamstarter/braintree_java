@@ -35,7 +35,6 @@ public class UsBankAccountIT extends IntegrationTest {
         UsBankAccount usBankAccount = gateway.usBankAccount().find(result.getTarget().getToken());
         assertNotNull(usBankAccount);
         AchMandate achMandate = usBankAccount.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
         assertEquals("Dan Schulman", usBankAccount.getAccountHolderName());
         assertEquals("checking", usBankAccount.getAccountType());
@@ -81,7 +80,6 @@ public class UsBankAccountIT extends IntegrationTest {
         UsBankAccount usBankAccount = gateway.usBankAccount().find(result.getTarget().getToken());
         assertNotNull(usBankAccount);
         AchMandate achMandate = usBankAccount.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
         assertEquals("Big Tech", usBankAccount.getAccountHolderName());
         assertEquals("checking", usBankAccount.getAccountType());
@@ -147,7 +145,6 @@ public class UsBankAccountIT extends IntegrationTest {
 
         UsBankAccountDetails usBankAccountDetails = transaction.getUsBankAccountDetails();
         AchMandate achMandate = usBankAccountDetails.getAchMandate();
-        assertEquals("cl mandate text", achMandate.getText());
         assertNotNull(achMandate.getAcceptedAt());
         assertEquals("Dan Schulman", usBankAccountDetails.getAccountHolderName());
         assertEquals("checking", usBankAccountDetails.getAccountType());

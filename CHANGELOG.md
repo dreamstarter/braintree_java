@@ -1,7 +1,12 @@
 # Changelog
 
-## Unreleased
+## 3.46.0
+* Add `paymentAccountReference` to `CreditCard`, `ApplePayDetails`, `AndroidPayDetails` and `CreditCardVerification`
+* Bug fix for `MonetaryAmountInput`
+* Add `processingMerchantCategoryCode` to `TransactionRequest`
+* Add missing `transfer` validation error codes in `Transaction`
 
+## 3.45.0
 * Add Bank Account Instant Verification functionality
 * Add `BankAccountInstantVerificationGateway` for creating JWT tokens
 * Add `BankAccountInstantVerificationJwt` response object

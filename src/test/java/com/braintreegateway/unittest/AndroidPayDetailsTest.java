@@ -39,4 +39,17 @@ public class AndroidPayDetailsTest {
         assertEquals(PrepaidReloadable.NO, card.getPrepaidReloadable());
     }
 
+    @Test
+    public void testPaymentAccountReferencePopulatedWhenPresent() {
+        String xml = "<android-pay-details>"
+                     + "<virtual-card-last-4>1234</virtual-card-last-4>"
+                     + "<payment-account-reference>V0010013019339005665779448477</payment-account-reference>"
+                   + "</android-pay-details>";
+
+        SimpleNodeWrapper node = SimpleNodeWrapper.parse(xml);
+        AndroidPayDetails details = new AndroidPayDetails(node);
+
+        assertEquals("V0010013019339005665779448477", details.getPaymentAccountReference());
+    }
+
 }

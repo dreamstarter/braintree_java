@@ -116,4 +116,10 @@ public class TransactionRequestTest {
         TransactionRequest request = new TransactionRequest().shippingTaxAmount(new BigDecimal("2.00"));
         TestHelper.assertIncludes("shippingTaxAmount>2.00</shippingTaxAmount>", request.toXML());
     }
+
+    @Test
+    public void toXmlIncludeProcessingMerchantCategoryCode() {
+        TransactionRequest request = new TransactionRequest().processingMerchantCategoryCode("5411");
+        TestHelper.assertIncludes("<processingMerchantCategoryCode>5411</processingMerchantCategoryCode>", request.toXML());
+    }
 }

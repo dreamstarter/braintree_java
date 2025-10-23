@@ -8828,4 +8828,98 @@ public class TransactionIT extends IntegrationTest implements MerchantAccountTes
         assertNotNull(saleResult.getTarget().getPayPalDetails().getRecipientPhone());
         assertEquals("test@paypal.com", saleResult.getTarget().getPayPalDetails().getRecipientEmail()); 
     }
+
+    @Test
+    public void findTransactionWithPaymentAccountReference() {
+        Transaction transaction = gateway.transaction().find("aft_txn");
+
+        assertNotNull(transaction.getCreditCard());
+        assertNotNull(transaction.getCreditCard().getPaymentAccountReference());
+    }
+
+    @Test
+    public void findTransactionWithPaymentAccountReferenceInApplePayDetails() {
+        Transaction transaction = gateway.transaction().find("apple_pay_transaction");
+
+        assertNotNull(transaction.getApplePayDetails());
+        assertNull(transaction.getApplePayDetails().getPaymentAccountReference());
+    }
+
+    @Test
+    public void findTransactionWithPaymentAccountReferenceInAndroidPayDetails() {
+        Transaction transaction = gateway.transaction().find("android_pay_card_transaction");
+
+        assertNotNull(transaction.getAndroidPayDetails());
+        assertNull(transaction.getAndroidPayDetails().getPaymentAccountReference());
+    }
+
+    @Test
+    public void indTransactionWithPaymentAccountReferenceInAndroidPayDetailsForAndroidPayNetworkToken() {
+        Transaction transaction = gateway.transaction().find("android_pay_network_token_transaction");
+
+        assertNotNull(transaction.getAndroidPayDetails());
+        assertNull(transaction.getAndroidPayDetails().getPaymentAccountReference());
+    }
+
+    @Test
+    public void saleWithProcessingMerchantCategoryCode() {
+        TransactionRequest request = new TransactionRequest().
+            amount(TransactionAmount.AUTHORIZE.amount).
+            processingMerchantCategoryCode("5411").
+            creditCard().
+                number(CreditCardNumber.VISA.number).
+                expirationDate("05/2025").
+                done();
+
+        Result<Transaction> result = gateway.transaction().sale(request);
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    public void saleWithInvalidProcessingMerchantCategoryCode() {
+        TransactionRequest request = new TransactionRequest().
+            amount(TransactionAmount.AUTHORIZE.amount).
+            processingMerchantCategoryCode("54111").
+            creditCard().
+                number(CreditCardNumber.VISA.number).
+                expirationDate("05/2025").
+                done();
+
+        Result<Transaction> result = gateway.transaction().sale(request);
+        assertFalse(result.isSuccess());
+        assertEquals(ValidationErrorCode.TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+                result.getErrors().forObject("transaction").onField("processing_merchant_category_code").get(0).getCode());
+    }
+
+    @Test
+    public void saleWithProcessingMerchantCategoryCodeNonNumeric() {
+        TransactionRequest request = new TransactionRequest().
+            amount(TransactionAmount.AUTHORIZE.amount).
+            processingMerchantCategoryCode("541A").
+            creditCard().
+                number(CreditCardNumber.VISA.number).
+                expirationDate("05/2025").
+                done();
+
+        Result<Transaction> result = gateway.transaction().sale(request);
+        assertFalse(result.isSuccess());
+        assertEquals(ValidationErrorCode.TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+                result.getErrors().forObject("transaction").onField("processing_merchant_category_code").get(0).getCode());
+    }
+
+    @Test
+    public void saleWithProcessingMerchantCategoryCodeTooShort() {
+        TransactionRequest request = new TransactionRequest().
+            amount(TransactionAmount.AUTHORIZE.amount).
+            processingMerchantCategoryCode("541").
+            creditCard().
+                number(CreditCardNumber.VISA.number).
+                expirationDate("05/2025").
+                done();
+
+        Result<Transaction> result = gateway.transaction().sale(request);
+        assertFalse(result.isSuccess());
+        assertEquals(ValidationErrorCode.TRANSACTION_PROCESSING_MERCHANT_CATEGORY_CODE_IS_INVALID,
+                result.getErrors().forObject("transaction").onField("processing_merchant_category_code").get(0).getCode());
+    }
 }

@@ -37,4 +37,17 @@ public class ApplePayDetailsTest {
         assertEquals(Corporate.NO, card.getCorporate());
         assertEquals(Purchase.NO, card.getPurchase());
     }
+
+    @Test
+    public void testPaymentAccountReferencePopulatedWhenPresent() {
+        String xml = "<apple-pay-details>"
+                     + "<last-4>1234</last-4>"
+                     + "<payment-account-reference>V0010013019339005665779448477</payment-account-reference>"
+                   + "</apple-pay-details>";
+
+        SimpleNodeWrapper node = SimpleNodeWrapper.parse(xml);
+        ApplePayDetails details = new ApplePayDetails(node);
+
+        assertEquals("V0010013019339005665779448477", details.getPaymentAccountReference());
+    }
 }

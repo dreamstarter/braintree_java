@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import com.braintreegateway.graphql.inputs.PayPalPurchaseUnitInput;
-import com.braintreegateway.graphql.inputs.PayPalPayeeInput; 
-import com.braintreegateway.MonetaryAmountInput;
+import com.braintreegateway.graphql.inputs.PayPalPayeeInput;
+import com.braintreegateway.graphql.inputs.MonetaryAmountInput;
 
 class PayPalPurchaseUnitInputTest {
 

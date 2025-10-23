@@ -202,6 +202,7 @@ public class CreditCard implements PaymentMethod {
     private boolean isVenmoSdk;
     private String issuingBank;
     private String last4;
+    private String paymentAccountReference;
     private String payroll;
     private String prepaid;
     private String prepaidReloadable;
@@ -245,6 +246,7 @@ public class CreditCard implements PaymentMethod {
         issuingBank = node.findString("issuing-bank");
         isVenmoSdk = node.findBoolean("venmo-sdk");
         last4 = node.findString("last-4");
+        paymentAccountReference = node.findString("payment-account-reference");
         payroll = node.findString("payroll");
         prepaid = node.findString("prepaid");
         prepaidReloadable = node.findString("prepaid-reloadable");
@@ -379,6 +381,10 @@ public class CreditCard implements PaymentMethod {
 
     public String getLast4() {
         return last4;
+    }
+
+    public String getPaymentAccountReference() {
+        return paymentAccountReference;
     }
 
     public String getMaskedNumber() {
